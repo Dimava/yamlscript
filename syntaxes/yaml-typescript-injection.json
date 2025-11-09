@@ -1,0 +1,22 @@
+{
+  "scopeName": "yaml.injection.typescript",
+  "injectionSelector": "L:source.yaml",
+  "patterns": [
+    {
+      "name": "meta.embedded.block.typescript",
+      "begin": "^(\\s*)(code|script|handler|transform|validator|typescript|function|logic):\\s*[|>][-+]?\\s*$",
+      "end": "^(?!\\1\\s+|\\s*$)",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.flow.block-scalar.literal.yaml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.ts"
+        }
+      ]
+    }
+  ]
+}
+

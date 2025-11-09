@@ -29,6 +29,31 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "YAMLScript",
+      "properties": {
+        "yamlscript.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable TypeScript analysis in YAML files"
+        }
+      }
+    },
+    "typescriptServerPlugins": [
+      {
+        "name": "typescript-yamlscript-plugin",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
+    ],
+    "grammars": [
+      {
+        "path": "./syntaxes/yaml-typescript-injection.json",
+        "scopeName": "yaml.injection.typescript",
+        "injectTo": [
+          "source.yaml"
+        ]
+      }
+    ],
     "commands": [
       {
         "command": "yamlscript.helloWorld",
@@ -64,6 +89,7 @@
     "@vscode/test-electron": "^2.5.2"
   },
   "dependencies": {
-    "yaml": "^2.6.1"
+    "yaml": "^2.6.1",
+    "typescript": "^5.9.3"
   }
 }
