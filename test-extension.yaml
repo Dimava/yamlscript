@@ -1,0 +1,42 @@
+# Quick Test File - Use this to verify the extension works
+
+name: Extension Test
+
+# TEST 1: Type mismatch (should show error)
+test1:
+  code: |
+    const myNumber: number = "this is a string";
+
+# TEST 2: Missing property (should show error)
+test2:
+  code: |
+    interface Person {
+      name: string;
+      age: number;
+      email: string;
+    }
+    
+    const person: Person = {
+      name: "Alice",
+      age: 30
+      // Missing 'email' - should error!
+    };
+
+# TEST 3: Invalid union type (should show error)
+test3:
+  code: |
+    type Status = "active" | "inactive" | "pending";
+    const myStatus: Status = "invalid";
+
+# TEST 4: Function parameter error (should show error)
+test4:
+  code: |
+    function greet(name: string): string {
+      return `Hello, ${name}`;
+    }
+    
+    greet(123); // Wrong type!
+
+# If you see RED SQUIGGLY LINES under the errors above,
+# the extension is working! 🎉
+

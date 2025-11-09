@@ -1,15 +1,32 @@
 {
   "name": "yamlscript",
-  "displayName": "yamlscript",
-  "description": "Make Typescript wirk in YAML",
+  "displayName": "YAMLScript - TypeScript in YAML",
+  "description": "Enable TypeScript language server features for TypeScript code embedded in YAML files",
   "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/yamlscript"
+  },
+  "keywords": [
+    "yaml",
+    "typescript",
+    "language-server",
+    "diagnostics",
+    "type-checking"
+  ],
   "engines": {
     "vscode": "^1.105.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages",
+    "Linters"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:yaml",
+    "onLanguage:yml"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -45,5 +62,8 @@
     "typescript": "^5.9.3",
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2"
+  },
+  "dependencies": {
+    "yaml": "^2.6.1"
   }
 }

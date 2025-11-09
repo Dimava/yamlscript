@@ -1,0 +1,52 @@
+name: Example YAML with TypeScript
+
+# TypeScript code example 1
+handler:
+  code: |
+    const greet = (name: string): string => {
+      return `Hello, ${name}!`;
+    };
+    
+    // This will show a TypeScript error - wrong type
+    const num: number = "not a number";
+    
+    interface User {
+      id: number;
+      name: string;
+      email: string;
+    }
+    
+    const user: User = {
+      id: 1,
+      name: "John",
+      // Missing 'email' property - should error
+    };
+
+# TypeScript code example 2
+transform:
+  script: |
+    function processData<T>(data: T[]): T[] {
+      return data.filter(item => item !== null);
+    }
+    
+    type Status = "active" | "inactive" | "pending";
+    
+    const status: Status = "invalid"; // Error: not assignable
+
+# Another example with imports
+utils:
+  typescript: |
+    import { readFile } from 'fs/promises';
+    
+    async function loadConfig(path: string): Promise<object> {
+      const content = await readFile(path, 'utf-8');
+      return JSON.parse(content);
+    }
+    
+    // Unused variable - should show warning
+    const unused = 42;
+
+metadata:
+  version: "1.0.0"
+  description: "Example YAML file with embedded TypeScript code blocks"
+

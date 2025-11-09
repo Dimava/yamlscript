@@ -1,71 +1,152 @@
-# yamlscript README
+# YAMLScript - TypeScript in YAML Files
 
-This is the README for your extension "yamlscript". After writing up a brief description, we recommend including the following sections.
+Enable TypeScript language server features (error checking, type checking, IntelliSense) for TypeScript code embedded in YAML files - similar to how it works in Markdown files!
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- ✅ **Type Checking**: Get TypeScript errors directly in your YAML files
+- ✅ **IntelliSense**: Auto-completion and hover information for TypeScript code
+- ✅ **Diagnostics**: See TypeScript errors, warnings, and suggestions inline
+- ✅ **Automatic Detection**: Automatically detects TypeScript code blocks in YAML files
+- ✅ **Real-time Updates**: Diagnostics update as you type
 
-For example if there is an image subfolder under your extension project workspace:
+## How It Works
 
-\!\[feature X\]\(images/feature-x.png\)
+The extension uses **Virtual Documents** to extract TypeScript code from YAML files and connect it to the TypeScript language server. This is the same approach used by VS Code for Markdown files.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+When you open a YAML file:
+1. The extension scans for TypeScript code blocks
+2. Each code block is extracted and registered as a virtual `.ts` document
+3. The TypeScript language server analyzes the virtual documents
+4. Diagnostics (errors, warnings) are mapped back to the original YAML file
+5. You see TypeScript errors directly in your YAML file!
+
+## Usage
+
+Simply write TypeScript code in your YAML files using multiline string blocks. The extension will automatically detect and analyze TypeScript code in values with keys like:
+
+- `code`, `script`, `handler`, `transform`, etc.
+- Any multiline string that looks like TypeScript
+
+### Example YAML File
+
+```yaml
+name: My Configuration
+
+# TypeScript code with type checking
+handler:
+  code: |
+    interface User {
+      id: number;
+      name: string;
+      email: string;
+    }
+    
+    const user: User = {
+      id: 1,
+      name: "John",
+      // ERROR: Missing 'email' property
+    };
+
+# Function with generics
+utils:
+  script: |
+    function processData<T>(data: T[]): T[] {
+      return data.filter(item => item !== null);
+    }
+    
+    // ERROR: Type '"invalid"' is not assignable
+    type Status = "active" | "inactive";
+    const status: Status = "invalid";
+```
+
+## Supported Patterns
+
+The extension detects TypeScript code in several ways:
+
+1. **Explicit Markers**: Use comments to mark TypeScript blocks
+   ```yaml
+   # typescript:
+   code: |
+     const x: number = 1;
+   ```
+
+2. **Common Keys**: Keys containing `code`, `script`, `handler`, `transform`, etc.
+   ```yaml
+   script: |
+     function hello() { }
+   ```
+
+3. **Heuristic Detection**: Automatically detects TypeScript patterns
+   - `const`, `let`, `var`, `function`, `class`, `interface`, `type`
+   - Type annotations (`: string`, `: number`, etc.)
+   - Arrow functions (`=>`)
+   - Imports/exports
+   - Generics (`<T>`)
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- VS Code 1.105.0 or higher
+- TypeScript installed in your workspace or globally
 
-## Extension Settings
+## Extension Commands
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- `YAMLScript: Hello World` - Test command to verify the extension is active
 
-For example:
+## Known Limitations
 
-This extension contributes the following settings:
+- Line/column mappings may be slightly off for deeply indented code blocks
+- Some advanced TypeScript features may not work perfectly in all contexts
+- The extension works best with isolated code blocks (not split across multiple YAML values)
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Comparison with Markdown
 
-## Known Issues
+This extension brings the same TypeScript integration that Markdown files have to YAML files:
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+| Feature | Markdown Code Blocks | YAML with YAMLScript |
+|---------|---------------------|----------------------|
+| TypeScript Errors | ✅ | ✅ |
+| Type Checking | ✅ | ✅ |
+| IntelliSense | ✅ | ✅ |
+| Real-time Updates | ✅ | ✅ |
+| Diagnostics | ✅ | ✅ |
+
+## Development
+
+To work on this extension:
+
+```bash
+# Install dependencies
+pnpm install
+
+# Compile and watch for changes
+pnpm run watch
+
+# Run the extension in debug mode
+# Press F5 in VS Code
+```
+
+## How to Test
+
+1. Open the extension folder in VS Code
+2. Press `F5` to launch the Extension Development Host
+3. Open the `example.yaml` file
+4. You should see TypeScript errors highlighted in the YAML file!
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Initial release:
+- Virtual document provider for TypeScript code in YAML
+- Automatic code block detection
+- TypeScript diagnostics mapped to YAML source
+- Support for multiple code blocks per file
 
 ---
 
-## Following extension guidelines
+## Contributing
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+Found a bug or have a feature request? Please open an issue on GitHub!
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Enjoy coding with TypeScript in YAML! 🚀**
